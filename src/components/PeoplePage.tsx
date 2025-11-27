@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { getPeople } from '../api';
 import { Person } from '../types';
 import { useSearchParams } from 'react-router-dom';
-import React from 'react';
 
 export const PeoplePage = () => {
   const [people, setPeople] = useState<Person[]>([]);
@@ -47,16 +46,19 @@ export const PeoplePage = () => {
     if (query !== '') {
       const queryInLowerCase = query.toLowerCase();
 
-      tempPeople = tempPeople.filter(person => {
-        const nameMatch = person.name.toLowerCase().includes(queryInLowerCase);
-        const motherNameMatch = person.motherName
-          ?.toLowerCase()
-          .includes(queryInLowerCase);
-        const fatherNameMatch = person.fatherName
-          ?.toLowerCase()
-          .includes(queryInLowerCase);
+      const matchesQuery = (
+        value: string | null | undefined,
+        q: string,
+      ): boolean => {
+        return value?.toLowerCase().includes(q) ?? false;
+      };
 
-        return nameMatch || motherNameMatch || fatherNameMatch;
+      tempPeople = tempPeople.filter(person => {
+        return (
+          matchesQuery(person.name, queryInLowerCase) ||
+          matchesQuery(person.motherName, queryInLowerCase) ||
+          matchesQuery(person.fatherName, queryInLowerCase)
+        );
       });
     }
 

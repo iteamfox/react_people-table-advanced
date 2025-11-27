@@ -5,7 +5,6 @@ import './App.scss';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { HomePage } from './components/HomePage';
 import { PageNotFound } from './PageNotFound';
-import React from 'react';
 
 export const App = () => {
   return (
